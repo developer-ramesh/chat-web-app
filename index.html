@@ -1,0 +1,104 @@
+<html>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+
+<body>
+
+  <div id="wrapper">
+    <div id="menu">
+      <p class="welcome">Welcome, <b id="userName"></b></p>
+    </div>
+
+    <div id="chatbox">
+      <ul id="messages"></ul>
+    </div>
+
+    <form>
+      <input name="usermsg" type="text" id="usermsg" autocomplete="Off" required/>
+      <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+    </form>
+  </div>
+
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<script>
+  let userName = prompt("What's your name");
+  let room = prompt("Room name");
+
+  //let userName = 'Ramesh';
+  //let room = 'room1';
+
+  $('#userName').text(userName);
+
+  let ID = "";
+  var socket = io();
+  //send event that user has joined room
+  socket.emit("join room", { username: userName, roomName: room });
+
+  //receive data from server.
+  socket.on('send data', (data) => {
+    ID = data.id; //ID will be used later
+    console.log(" my ID:" + ID);
+  })
+
+
+  $("#usermsg").focus();
+  //when form is submitted, capture the input value and then send it to server
+  document
+    .getElementsByTagName("form")[0]
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      socket.emit("chat message", {
+        value: document.getElementById("usermsg").value,
+        user: userName,
+      });
+      document.getElementById("usermsg").value = "";
+    });
+
+
+  // Picks up the data emitted by the server and displays the message to the webpage
+  socket.on("chat message", (data) => {
+    console.log(data.data.user + ": " + data.id);
+    displayMessage(data);
+  });
+
+
+  function displayMessage(data) {
+    let authorClass = "";
+    let divClass = ""
+    //verify that the user ID and the message sent ID is similar 
+    if (data.id === ID) {
+      console.log("This person has sent a message")
+      authorClass = "me";
+      divClass = "myDiv";
+    } else {
+      authorClass = "you";
+      divClass = "yourDiv";
+    }
+    const div = document.createElement("div");
+    div.className = divClass;
+    const li = document.createElement("li");
+    const p = document.createElement("p");
+    div.innerHTML =
+      '<p class="' +
+      authorClass +
+      '">' +
+      data.data.user + ', ' + moment().format("hh:mm A") +
+      
+      "</p>" +
+      '<p class="message"> ' +
+      data.data.value +
+      "</p>";
+    div.appendChild(p);
+    li.appendChild(div);
+
+    document.getElementById("messages").appendChild(li);
+    
+    window.scrollTo(0, document.body.scrollHeight); //scroll to the bottom
+  }
+</script>
+
+</html>
