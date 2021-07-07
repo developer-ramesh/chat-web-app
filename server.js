@@ -6,7 +6,7 @@ const { joinUser, removeUser, findUser } = require('./users');
 
 app.use(express.static(__dirname + '/public'));
 
-app.get("/message/", function (req, res) {
+app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
