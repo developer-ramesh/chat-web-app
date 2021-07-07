@@ -13,7 +13,6 @@ Real time chat messaging web app with Audio and Video call
 
 
 
-
 # How to run the project?
 
 1. Clone this repository in your local system.
