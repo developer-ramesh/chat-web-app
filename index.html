@@ -1,15 +1,18 @@
 <html>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/style.css" />
-
 <body>
 
-  <div id="room_wrapper" style="text-align: center;border: 2px solid #0b0b0b;border-radius: 3px;width: 400px;padding: 20px;margin-left:
-    34%;">
+  <div id="room_wrapper"
+    style="text-align: center;border: 2px solid #0b0b0b;border-radius: 3px;width: 400px;padding: 20px;margin-left:34%;">
     <input type="text" id="uname" placeholder="Your Name" autocomplete="Off" style="height: 30px;padding: 5px;"><br>
-    <input type="text" id="uroom" placeholder="Room Name" autocomplete="Off" style="height: 30px;padding: 5px;margin-top: 10px;"><br><br>
+    <input type="text" id="uroom" placeholder="Room Name" autocomplete="Off"
+      style="height: 30px;padding: 5px;margin-top: 10px;"><br><br>
     <input type="submit" value="Create Room" id="submitmsg" class="room">
   </div>
+
+  
+  <video id="remoteVideo" autoplay></video>
 
   <div id="wrapper" style="display: none;">
     <div id="menu">
@@ -23,102 +26,23 @@
     <form>
       <input name="usermsg" type="text" id="usermsg" autocomplete="Off" required />
       <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+      <input name="call" type="button" id="call" class="btn" value="Call" />
+      <input name="mute" type="button" id="mute" class="btn" value="Mute" />
+      <input name="camera" type="button" id="camera" class="btn" value="Camera Off" />
     </form>
   </div>
 
+
+  <div id="consultingRoom" style="display: none;">
+    <video id="localVideo" autoplay style="width:25%;"></video>
+  </div>
+
+
 </body>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
-<script>
-
-  $('.room').click(function () {
-    if (($('#uname').val() != '') && ($('#uroom').val() != '')) {
-      $('#wrapper').show();
-      $('#room_wrapper').hide('slow');
-      userName = $('#uname').val();
-      room = $('#uroom').val();
-
-
-
-
-      //let userName = prompt("What's your name");
-      //let room = prompt("Room name");
-
-      $('#userName').text(userName);
-
-      let ID = "";
-      var socket = io();
-      //send event that user has joined room
-      socket.emit("join room", { username: userName, roomName: room });
-
-      //receive data from server.
-      socket.on('send data', (data) => {
-        ID = data.id; //ID will be used later
-        console.log(" my ID:" + ID);
-      })
-
-
-      $("#usermsg").focus();
-      //when form is submitted, capture the input value and then send it to server
-      document
-        .getElementsByTagName("form")[0]
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          socket.emit("chat message", {
-            value: document.getElementById("usermsg").value,
-            user: userName,
-          });
-          document.getElementById("usermsg").value = "";
-        });
-
-
-      // Picks up the data emitted by the server and displays the message to the webpage
-      socket.on("chat message", (data) => {
-        console.log(data.data.user + ": " + data.id);
-        displayMessage(data);
-      });
-
-
-      function displayMessage(data) {
-        let authorClass = "";
-        let divClass = ""
-        //verify that the user ID and the message sent ID is similar 
-        if (data.id === ID) {
-          console.log("This person has sent a message")
-          authorClass = "me";
-          divClass = "myDiv";
-        } else {
-          authorClass = "you";
-          divClass = "yourDiv";
-        }
-        const div = document.createElement("div");
-        div.className = divClass;
-        const li = document.createElement("li");
-        const p = document.createElement("p");
-        div.innerHTML =
-          '<p class="' +
-          authorClass +
-          '">' +
-          data.data.user + ', ' + moment().format("hh:mm A") +
-
-          "</p>" +
-          '<p class="message"> ' +
-          data.data.value +
-          "</p>";
-        div.appendChild(p);
-        li.appendChild(div);
-
-        document.getElementById("messages").appendChild(li);
-
-        window.scrollTo(0, document.body.scrollHeight); //scroll to the bottom
-      }
-
-
-    }
-  });
-
-</script>
-
+<!-- <script src="/socket.io/socket.io.js"></script> -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" defer></script>
+<script src="http://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<script src="/client.js" defer></script>
 </html>
