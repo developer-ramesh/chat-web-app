@@ -109,7 +109,7 @@ $('.room').click(function () {
     //when server emits created
     socket.on('created', function (room) {
       //caller gets media devices with defined constraints
-      navigator.mediaDevices.getUserMedia(streamConstraints).then(function (stream) {
+      Promise.resolve(navigator.mediaDevices.getUserMedia(streamConstraints)).then(function (stream) {
         localStream = stream;
         localVideo.srcObject = stream;
         isCaller = true;
