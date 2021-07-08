@@ -114,7 +114,7 @@ $('.room').click(function () {
         localVideo.srcObject = stream;
         isCaller = true;
       }).catch(function (err) {
-        console.log('An error occured when accessing media devices');
+        console.log('An error occured when accessing media devices', err);
       })
     });
 
@@ -127,7 +127,7 @@ $('.room').click(function () {
         localVideo.srcObject = stream;
         socket.emit('ready', room);
       }).catch(function (err) {
-        console.log('An error ocurred when accessing media devices');
+        console.log('An error ocurred when accessing media devices', err);
       });
     });
 
