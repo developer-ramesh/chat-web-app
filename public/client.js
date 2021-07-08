@@ -112,6 +112,7 @@ $('.room').click(function () {
       Promise.resolve(navigator.mediaDevices.getUserMedia(streamConstraints)).then(function (stream) {
         localStream = stream;
         localVideo.srcObject = stream;
+        localVideo.volume = 0.1;
         isCaller = true;
       }).catch(function (err) {
         console.log('An error occured when accessing media devices', err);
