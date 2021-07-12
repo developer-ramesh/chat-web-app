@@ -31,7 +31,6 @@ $('.room').click(function () {
     //these are the STUN servers
     var iceServers = {
       'iceServers': [
-        { 'url': 'stun:stun2.l.google.com:19305' },
         { 'url': 'stun:stun.services.mozilla.com' },
       ]
     }
@@ -125,7 +124,6 @@ $('.room').click(function () {
     
     //when server emits joined
     socket.on('joined', function (room) {
-      setTimeout(() => {
       //callee gets user media devices
       navigator.mediaDevices.getUserMedia(streamConstraints).then(function (stream) {
         localStream = stream;
@@ -134,7 +132,6 @@ $('.room').click(function () {
       }).catch(function (err) {
         console.log('An error ocurred when accessing media devices', err);
       });
-    }, 3000);
     });
 
     //when server emits ready
