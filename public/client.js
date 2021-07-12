@@ -31,19 +31,12 @@ $('.room').click(function () {
     //these are the STUN servers
     var iceServers = {
       'iceServers': [
-        {
-          'url': 'stun:stun.l.google.com:19302'
-        },
-        {
-          'url': 'turn:192.158.29.39:3478?transport=udp',
-          'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-          'username': '28224511:1379330808'
-        },
-        {
-          'url': 'turn:192.158.29.39:3478?transport=tcp',
-          'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-          'username': '28224511:1379330808'
-        }
+        { 'url': 'stun:stun.l.google.com:19302'},
+        { 'url': 'stun:stun1.l.google.com:19302'},
+        { 'url': 'stun:stun2.l.google.com:19302'},
+        { 'url': 'stun:stun.l.google.com:19302?transport=udp'},
+        { 'url': 'stun:stun.i.google.com:19302'},
+        { 'url': 'stun:stun.services.mozilla.com' },
       ]
     }
     var streamConstraints = { audio: true, video: true };
@@ -133,7 +126,6 @@ $('.room').click(function () {
     });
 
 
-    
     //when server emits joined
     socket.on('joined', function (room) {
       //callee gets user media devices
@@ -148,9 +140,7 @@ $('.room').click(function () {
 
     //when server emits ready
     socket.on('ready', function () {
-      console.log('Ready');
       if (isCaller) {
-        console.log('Ready-111');
         //creates an RTCPeerConnection object
         rtcPeerConnection = new RTCPeerConnection(iceServers);
 
@@ -171,9 +161,9 @@ $('.room').click(function () {
 
     //when servers emits offer
     socket.on('offer', function (event) {
-      console.log('Offer');
+      console.log('offer', event);
       if (!isCaller) {
-        console.log('Offer-111');
+        console.log('offer-1111111111');
         //creates an RTCPeerConnection object
         rtcPeerConnection = new RTCPeerConnection(iceServers);
 
@@ -216,7 +206,6 @@ $('.room').click(function () {
 
     //when a user receive the user's video and audio stream 
     function onAddStream(event) {
-      console.log('onAddStream', event);
       remoteVideo.srcObject = event.stream;
       remoteStream = event.stream;
     }
@@ -224,9 +213,9 @@ $('.room').click(function () {
     //these are the functions referenced before as listeners for the peer connection
     //send a candidate meesage to server
     function onIceCandidate(event) {
-      console.log('111111111', event);
+      console.log('sending ice candidate', event);
       if (event.candidate) {
-        console.log('sending ice candidate', room);
+        console.log('sending ice candidate');
         socket.emit('candidate', {
           type: 'candidate',
           label: event.candidate.sdpMLineIndex,
