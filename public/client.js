@@ -2,8 +2,8 @@ $('.room').click(function () {
   if (($('#uname').val() != '') && ($('#uroom').val() != '')) {
     $('#wrapper').show();
     $('#room_wrapper').hide('slow');
-    userName = $('#uname').val();
-    room = $('#uroom').val();
+    var userName = $('#uname').val();
+    var room = $('#uroom').val();
 
 
 
@@ -116,17 +116,7 @@ $('.room').click(function () {
         localVideo.srcObject = stream;
         localVideo.volume = 0.1;
         isCaller = true;
-      }).then((stream) => {
-        audioSource = audioContext.createMediaStreamSource(stream),
-        audioDestination = audioContext.createMediaStreamDestination();
-        audioSource.connect(gainNode);
-        gainNode.connect(audioDestination);
-        gainNode.gain.value = 0.1;
-        window.localStream = audioDestination.stream;
-        //audioElement.srcObject = window.localStream; //for playback
-        //you can add this stream to pc object
-        // pc.addStream(window.localStream);
-    }).catch(function (err) {
+      }).catch(function (err) {
         console.log('An error occured when accessing media devices', err);
       })
     });
