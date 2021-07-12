@@ -39,7 +39,7 @@ $('.room').click(function () {
         { 'url': 'stun:stun.services.mozilla.com' },
       ]
     }
-    var iceServers =  null;
+    
     var streamConstraints = { audio: true, video: true };
     var isCaller;
 
@@ -173,7 +173,7 @@ $('.room').click(function () {
         rtcPeerConnection.onaddstream = onAddStream;
 
         //adds the current local stream to the object
-        rtcPeerConnection.addStream(localStream);
+        rtcPeerConnection.addStream(remoteStream);
 
         //stores the offer as remote description
         rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event));
