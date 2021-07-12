@@ -31,7 +31,7 @@ $('.room').click(function () {
     //these are the STUN servers
     var iceServers = {
       'iceServers': [
-        { 'url': 'stun:stun.I.google.com:19302' },
+        { 'url': 'stun:stun.l.google.com:19302' },
         { 'url': 'stun:stun.services.mozilla.com' },
       ]
     }
