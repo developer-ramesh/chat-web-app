@@ -39,6 +39,7 @@ $('.room').click(function () {
         { 'url': 'stun:stun.services.mozilla.com' },
       ]
     }
+    var iceServers =  null;
     var streamConstraints = { audio: true, video: true };
     var isCaller;
 
