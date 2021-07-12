@@ -224,7 +224,7 @@ $('.room').click(function () {
     //these are the functions referenced before as listeners for the peer connection
     //send a candidate meesage to server
     function onIceCandidate(event) {
-      console.log('111111111'. event);
+      console.log('111111111', event);
       if (event.candidate) {
         console.log('sending ice candidate', room);
         socket.emit('candidate', {
