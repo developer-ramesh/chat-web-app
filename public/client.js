@@ -141,7 +141,9 @@ $('.room').click(function () {
 
     //when server emits ready
     socket.on('ready', function () {
+      console.log('ready');
       if (isCaller) {
+        console.log('ready222222222');
         //creates an RTCPeerConnection object
         rtcPeerConnection = new RTCPeerConnection(iceServers);
 
@@ -173,7 +175,7 @@ $('.room').click(function () {
         rtcPeerConnection.onaddstream = onAddStream;
 
         //adds the current local stream to the object
-        rtcPeerConnection.addStream(remoteStream);
+        rtcPeerConnection.addStream(localStream);
 
         //stores the offer as remote description
         rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event));
