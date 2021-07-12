@@ -30,14 +30,12 @@ $('.room').click(function () {
     var rtcPeerConnection;
     //these are the STUN servers
     var iceServers = {
-      'iceServers': [
-        { 'url': 'stun:stun.l.google.com:19302'},
-        { 'url': 'stun:stun1.l.google.com:19302'},
-        { 'url': 'stun:stun2.l.google.com:19302'},
-        { 'url': 'stun:stun.l.google.com:19302?transport=udp'},
-        { 'url': 'stun:stun.i.google.com:19302'},
-        { 'url': 'stun:stun.services.mozilla.com' },
-      ]
+      iceServers: [
+        {
+          urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+        },
+      ],
+      iceCandidatePoolSize: 10,
     }
     
     var streamConstraints = { audio: true, video: true };
@@ -191,6 +189,7 @@ $('.room').click(function () {
 
     //when server emits answer
     socket.on('answer', function (event) {
+      console.log('answer1111111111111');
       //stores it as remot description
       rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event));
     });
