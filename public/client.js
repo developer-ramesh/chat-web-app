@@ -216,6 +216,7 @@ $('.room').click(function () {
 
     //when a user receive the user's video and audio stream 
     function onAddStream(event) {
+      console.log('onAddStream', event);
       remoteVideo.srcObject = event.stream;
       remoteStream = event.stream;
     }
@@ -223,8 +224,9 @@ $('.room').click(function () {
     //these are the functions referenced before as listeners for the peer connection
     //send a candidate meesage to server
     function onIceCandidate(event) {
+      console.log('111111111'. event);
       if (event.candidate) {
-        console.log('sending ice candidate');
+        console.log('sending ice candidate', room);
         socket.emit('candidate', {
           type: 'candidate',
           label: event.candidate.sdpMLineIndex,
