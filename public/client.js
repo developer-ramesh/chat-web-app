@@ -139,7 +139,9 @@ $('.room').click(function () {
 
     //when server emits ready
     socket.on('ready', function () {
+      console.log('Ready');
       if (isCaller) {
+        console.log('Ready-111');
         //creates an RTCPeerConnection object
         rtcPeerConnection = new RTCPeerConnection(iceServers);
 
@@ -160,7 +162,9 @@ $('.room').click(function () {
 
     //when servers emits offer
     socket.on('offer', function (event) {
+      console.log('Offer');
       if (!isCaller) {
+        console.log('Offer-111');
         //creates an RTCPeerConnection object
         rtcPeerConnection = new RTCPeerConnection(iceServers);
 
