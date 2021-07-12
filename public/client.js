@@ -31,8 +31,8 @@ $('.room').click(function () {
     //these are the STUN servers
     var iceServers = {
       'iceServers': [
+        { 'url': 'stun:stun.I.google.com:19302' },
         { 'url': 'stun:stun.services.mozilla.com' },
-        { 'url': 'stun:stun.i.google.com:19302' },
       ]
     }
     var streamConstraints = { audio: true, video: true };
@@ -122,8 +122,10 @@ $('.room').click(function () {
     });
 
 
+    
     //when server emits joined
     socket.on('joined', function (room) {
+      setTimeout(() => {
       //callee gets user media devices
       navigator.mediaDevices.getUserMedia(streamConstraints).then(function (stream) {
         localStream = stream;
@@ -132,6 +134,7 @@ $('.room').click(function () {
       }).catch(function (err) {
         console.log('An error ocurred when accessing media devices', err);
       });
+    }, 3000);
     });
 
     //when server emits ready
